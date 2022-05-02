@@ -34,7 +34,6 @@ margin: 20px 7px;
 export const Checkbox = styled.div `
 display: flex;
 flex-direction: column;
-width: 200px;
 text-align: center;
 `
 export const Reset = styled.button`

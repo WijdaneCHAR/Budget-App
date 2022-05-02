@@ -29,6 +29,9 @@ export default function () {
     setExpense(0);
     setErr(false);
   }
+  const clear = () =>{
+    setErr(false);
+  }
   return (
     <div>
         <MoneyDiv>
@@ -40,8 +43,8 @@ export default function () {
        
         <Form onSubmit={add}>
           <div style={{display:"flex",flexdirection:"column"}}>
-            <Input style={{width:"70%"}} type="text" placeholder='Description' name='description' ></Input>
-            <Input style={{width:"20%"}}type="text" placeholder='Amount' name='amount' required></Input>
+            <Input style={{width:"70%"}} type="text" placeholder='Description' name='description'onFocus={clear}></Input>
+            <Input style={{width:"20%"}}type="text" placeholder='Amount' name='amount' onFocus={clear} required></Input>
             </div>
         <Checkbox>
             <div>
