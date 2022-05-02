@@ -6,6 +6,7 @@ padding: 5px 0;
 background-color: #395a86;
 color: #f6f6f6;
 border-radius:10px;
+cursor: pointer;
 &:hover{
     color: #395a86;
     background-color: #f6f6f6;
@@ -29,5 +30,17 @@ background-color: transparent;
 border: none;
 border-bottom:1px solid #333 ;
 margin: 20px 7px;
-
+`
+export const Checkbox = styled.div `
+display: flex;
+flex-direction: column;
+width: 200px;
+text-align: center;
+`
+export const Reset = styled.button`
+margin-top: 30px;
+background-color: transparent;
+border: none;
+cursor: pointer;
+color: #395a86;
 `
