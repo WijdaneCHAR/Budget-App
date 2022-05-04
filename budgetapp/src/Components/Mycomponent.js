@@ -1,22 +1,56 @@
 import React , {useState , useRef , useEffect }from 'react'
 import { Button , Form ,MoneyDiv,Input, Checkbox, Reset}from '../Styling';
 export default function () {
-    const [description,setDescription] = useState();
-    const [income,setIncome] = useState(0);
-    const [expense,setExpense] = useState(0);
+  function useLocalStorage(key, initialValue) {
+    const [storedValue, setStoredValue] = useState(() => {
+      if (typeof window === "undefined") {
+        return initialValue;
+      }
+      try {
+        const item = window.localStorage.getItem(key);
+        return item ? JSON.parse(item) : initialValue;
+      } catch (error) {
+        console.log(error);
+        return initialValue;
+      }
+    });
+
+    const setValue = (value) => {
+      try {
+        const valueToStore =
+          value instanceof Function ? value(storedValue) : value;
+        setStoredValue(valueToStore);
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    return [storedValue, setValue];
+  }
+
+    const [description,setDescription] = useLocalStorage("description",[]);
+    const [somme,setSomme] =  useLocalStorage("amount",[]);
+    const [income,setIncome] = useLocalStorage("income",0);
+    const [expense,setExpense] = useLocalStorage("expense",0);
     const [err,setErr] = useState(false);
 
     const prevIncome = useRef();
     const prevExpense = useRef();
+
     useEffect(() => {
         prevIncome.current = Number(income);
-        prevExpense.current = Number(expense)
+        prevExpense.current = Number(expense);
       }, [income,expense]); 
-
   const add = (e) => {
     e.preventDefault();
-    setDescription(e.target.elements.description.value)
-    if(e.target.elements.incomeType.checked) setIncome(prevIncome.current + Number(e.target.elements.amount.value));
+    const newDesc = description.concat(e.target.elements.description.value);
+    setDescription(newDesc);
+    const newSomme = somme.concat(e.target.elements.amount.value );
+    setSomme(newSomme);
+    if(e.target.elements.incomeType.checked)
+      setIncome(prevIncome.current + Number(e.target.elements.amount.value));
     else if(e.target.elements.expenseType.checked)  setExpense(prevExpense.current + Number(e.target.elements.amount.value)); 
     else setErr(true);
     e.target.elements.amount.value ="";
@@ -24,14 +58,18 @@ export default function () {
     e.target.elements.incomeType.checked = false;
     e.target.elements.expenseType.checked = false;
   }
+
   const reset = () =>{
     setIncome(0);
     setExpense(0);
+    setDescription("");
     setErr(false);
   }
+
   const clear = () =>{
     setErr(false);
   }
+  
   return (
     <div>
         <MoneyDiv>
@@ -57,9 +95,12 @@ export default function () {
             </div>
             {err && <p style={{color:"red"}}>Check an amount type !!</p>}
           </Checkbox>
-          
             <Button type="submit" >Add</Button>
         </Form>
+        <div>
+        {somme.map((som)=>{return <li>{som}</li>})}
+        {description.map((descr)=>{return <li>{descr}</li>})}
+        </div>
     </div>
   )
 }
