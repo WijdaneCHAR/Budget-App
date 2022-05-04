@@ -1,5 +1,5 @@
 import React , {useState , useRef , useEffect }from 'react'
-import { Button , Form ,MoneyDiv,Input, Checkbox, Reset}from '../Styling';
+import { Button , Form ,MoneyDiv,Input, Checkbox, Reset, Ul, Li, Remove}from '../Styling';
 export default function () {
   function useLocalStorage(key, initialValue) {
     const [storedValue, setStoredValue] = useState(() => {
@@ -29,9 +29,7 @@ export default function () {
     };
     return [storedValue, setValue];
   }
-
-    const [description,setDescription] = useLocalStorage("description",[]);
-    const [somme,setSomme] =  useLocalStorage("amount",[]);
+    const [couple,setCouple] = useLocalStorage("couple",{})
     const [income,setIncome] = useLocalStorage("income",0);
     const [expense,setExpense] = useLocalStorage("expense",0);
     const [err,setErr] = useState(false);
@@ -45,10 +43,9 @@ export default function () {
       }, [income,expense]); 
   const add = (e) => {
     e.preventDefault();
-    const newDesc = description.concat(e.target.elements.description.value);
-    setDescription(newDesc);
-    const newSomme = somme.concat(e.target.elements.amount.value );
-    setSomme(newSomme);
+    const newCouple = {};
+    newCouple[e.target.elements.amount.value] = e.target.elements.description.value; 
+    setCouple(Object.assign({}, couple, newCouple));
     if(e.target.elements.incomeType.checked)
       setIncome(prevIncome.current + Number(e.target.elements.amount.value));
     else if(e.target.elements.expenseType.checked)  setExpense(prevExpense.current + Number(e.target.elements.amount.value)); 
@@ -62,13 +59,13 @@ export default function () {
   const reset = () =>{
     setIncome(0);
     setExpense(0);
-    setDescription("");
     setErr(false);
   }
 
   const clear = () =>{
     setErr(false);
   }
+
   
   return (
     <div>
@@ -81,7 +78,7 @@ export default function () {
        
         <Form onSubmit={add}>
           <div style={{display:"flex",flexdirection:"column"}}>
-            <Input style={{width:"70%"}} type="text" placeholder='Description' name='description'onFocus={clear}></Input>
+            <Input style={{width:"70%"}} type="text" placeholder='Description' name='description'onFocus={clear} required></Input>
             <Input style={{width:"20%"}}type="text" placeholder='Amount' name='amount' onFocus={clear} required></Input>
             </div>
         <Checkbox>
@@ -97,9 +94,21 @@ export default function () {
           </Checkbox>
             <Button type="submit" >Add</Button>
         </Form>
-        <div>
-        {somme.map((som)=>{return <li>{som}</li>})}
-        {description.map((descr)=>{return <li>{descr}</li>})}
+        <div style={{margin:"0 15px"}}>
+          <h1>History :</h1>
+          <hr></hr>
+          <Ul>
+      {Object.keys(couple).map(key => {
+        return <Li key={key}>
+            <p style={{width:"80%"}}>{couple[key]} </p>
+            <p style={{width:"20%"}} >{key} $ </p>
+            {/* <p><Remove onClick={(key)=> {
+                delete couple[key];
+                setCouple(couple);
+            }}>remove</Remove></p> */}
+               </Li> 
+      })}
+          </Ul>
         </div>
     </div>
   )

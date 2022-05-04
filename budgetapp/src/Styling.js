@@ -43,3 +43,20 @@ border: none;
 cursor: pointer;
 color: #395a86;
 `
+export const Ul = styled.ul`
+list-style: none;
+background-color: aliceblue;
+`
+export const Li = styled.li`
+display: flex;
+flex-direction: row;
+`
+export const Remove = styled.button`
+margin-right: 10px;
+padding: 0;
+background-color: transparent;
+border: none;
+border-bottom: solid 1px #395a86;
+cursor: pointer;
+color: #395a86;
+`
