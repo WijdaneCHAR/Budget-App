@@ -66,7 +66,6 @@ export default function () {
     setErr(false);
   }
 
-  
   return (
     <div>
         <MoneyDiv>
@@ -100,12 +99,22 @@ export default function () {
           <Ul>
       {Object.keys(couple).map(key => {
         return <Li key={key}>
-            <p style={{width:"80%"}}>{couple[key]} </p>
+            <p style={{width:"70%"}}>{couple[key]} </p>
             <p style={{width:"20%"}} >{key} $ </p>
-            {/* <p><Remove onClick={(key)=> {
-                delete couple[key];
-                setCouple(couple);
-            }}>remove</Remove></p> */}
+            <p><Remove onClick={() => { 
+            
+              const copyCouple = {};
+                Object.keys(couple).map(key1 => {
+                  while(couple[key1] !== couple[key]){
+                   copyCouple[key1] = couple[key1];
+                   setCouple(copyCouple);
+                   return true;
+                  }
+                  //
+                })
+              ;
+              
+            }}>remove</Remove></p>
                </Li> 
       })}
           </Ul>
@@ -113,3 +122,5 @@ export default function () {
     </div>
   )
 }
+
+ 
