@@ -1,7 +1,7 @@
 import React , {useState , useRef , useEffect }from 'react'
 import { Button , Form ,MoneyDiv,Input, Checkbox, Reset, Ul, Li, Remove, Description,Amounts, DivScroll}from '../Styling'
-import swal from 'sweetalert'
-export default function () {
+import swal from 'sweetalert' 
+function Mycomponent() {
   function useLocalStorage(key, initialValue) {
     const [storedValue, setStoredValue] = useState(() => {
       if (typeof window === "undefined") {
@@ -52,8 +52,7 @@ export default function () {
         icon:'error',
         timer:1000
       })
-    }
-    else{
+    }else{
        if(e.target.elements.incomeType.checked){
       newCouple[e.target.elements.amount.value] = e.target.elements.description.value; 
       setCouple(Object.assign({}, couple, newCouple));
@@ -179,6 +178,7 @@ export default function () {
                    setCouple(copyCouple)
                    return true
                   }
+                  return true
                 })
               ;
               
@@ -191,5 +191,6 @@ export default function () {
     </div>
   )
 }
+export default Mycomponent;
 
  
